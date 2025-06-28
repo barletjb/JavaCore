@@ -17,23 +17,31 @@ public class FrenchNetSalaryCalculator {
     public static final double TAX_THRESHOLDS_4 = 177105;
     public static final double TAX_RATE_4 = 45 / 100.0;
 
+    public static final float FRENCH_SMIC = 11.07f;
+    public static final float FRENCH_MEDIAN_SALARY = 17.50f;
+    public static final float FRENCH_MIDDLE_SALARY = 22.50f;
+    public static final float FRENCH_UPPER_SALARY = 35.00f;
+
     public static void main(String[] args) {
-        
-        System.out.println("* Votre salaire Brut annuel");
-        double annualSalaryBrut = calculateAnnualGrossSalary(25);
-        System.out.println("--> " + annualSalaryBrut + " €");
-        System.out.println("* Salaire net après cotisations");
-        double annualSalaryNet = applySocialCharges(annualSalaryBrut, SOCIAL_TAXES);
-        System.out.println("--> " + annualSalaryNet + " €");
-        System.out.println("* Salaire net après impositions");
-        annualSalaryNet = applyRevenueTax(annualSalaryNet);
-        System.out.println("--> " + annualSalaryNet + " €");
+
+        System.out.println("Affichage du SMIC Français :");
+        displayFrenchSalary(FRENCH_SMIC);
+        System.out.println();
+        System.out.println("Affichage du Salaire Médian Français :");
+        displayFrenchSalary(FRENCH_MEDIAN_SALARY);
+        System.out.println();
+        System.out.println("Affichage du Salaire Moyen Français :");
+        displayFrenchSalary(FRENCH_MIDDLE_SALARY);
+        System.out.println();
+        System.out.println("Affichage du Seuil de Richesse Français :");
+        displayFrenchSalary(FRENCH_UPPER_SALARY);
+        System.out.println();
+
     }
 
     /**
      * Calculates the annual gross salary based on the given hourly gross salary.
      * Assumes 52 working weeks in a year. (53 need too)
-     *
      * @param hourlyGrossSalary the hourly gross salary
      * @return the annual gross salary
      */
@@ -43,7 +51,6 @@ public class FrenchNetSalaryCalculator {
 
     /**
      * Applies social charges to the annual gross salary to calculate the taxable net salary.
-     *
      * @param annualGrossSalary      the annual gross salary before social charges
      * @param socialChargePercentage the percentage of social charges to apply
      * @return the annual net salary after social charges
@@ -68,7 +75,6 @@ public class FrenchNetSalaryCalculator {
      * The method uses a tiered tax system where income is taxed differently across several thresholds
      * (TAX_THRESHOLDS_1 to TAX_THRESHOLDS_4) with corresponding tax rates (TAX_RATE_1 to TAX_RATE_4).
      * Tax is calculated from the highest bracket down to the lowest.
-     *
      * @param annualNetSalary the annual net salary before income tax
      * @return the annual net salary after applying progressive income tax
      */
@@ -112,7 +118,6 @@ public class FrenchNetSalaryCalculator {
 
     /**
      * Calculates the income tax for a given tax bracket.
-     *
      * @param netTaxableSalary the total taxable income before deductions.
      * @param taxThreshold     the lower bound threshold for the current bracket.
      * @param taxRate          the applicable tax rate for the bracket.
@@ -125,6 +130,29 @@ public class FrenchNetSalaryCalculator {
             return ir;
         }
         return 0;
+    }
+
+    /**
+     * Displays the complete French salary calculation based on a given hourly gross wage.
+     * The calculation includes:
+     *   -The annual gross salary (based on 38.5 hours/week for 52 weeks)
+     *   -The net salary after social charges deduction (10.5%)
+     *   -The final net salary after applying progressive income tax
+     * Each step is printed to the console with the corresponding amount.
+     * @param hourlySalary The hourly gross wage in euros.
+     */
+    public static void displayFrenchSalary (double hourlySalary){
+        System.out.println("-------------------------");
+        System.out.println("* Votre salaire Brut annuel");
+        double annualSalaryBrut = calculateAnnualGrossSalary(hourlySalary);
+        System.out.println("--> " + annualSalaryBrut + " €");
+        System.out.println("* Salaire net après cotisations");
+        double annualSalaryNet = applySocialCharges(annualSalaryBrut, SOCIAL_TAXES);
+        System.out.println("--> " + annualSalaryNet + " €");
+        System.out.println("* Salaire net après impositions");
+        annualSalaryNet = applyRevenueTax(annualSalaryNet);
+        System.out.println("--> " + annualSalaryNet + " €");
+        System.out.println("-------------------------");
     }
 
 }

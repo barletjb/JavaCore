@@ -5,12 +5,11 @@ public class PrimeNumberSearcherV3 {
     public static void main(String[] args) {
 
         int compteurPremiers = 0;
-        int potentialPrimeNumber = 2;
         String premiers = "";
 
 
+        int potentialPrimeNumber = 2;
         while (compteurPremiers < 50) {
-
 
             boolean isPremier = isPrimeNumber(potentialPrimeNumber);
 
@@ -29,18 +28,14 @@ public class PrimeNumberSearcherV3 {
         System.out.println("-> Le total de nombre premier est de : " + compteurPremiers);
     }
 
-    public static boolean isPrimeNumber(int number) {
+    public static boolean isPrimeNumber(int potentialPrimeNumber) {
 
-        boolean isPremier = true;
-
-        for (int potentialDivisor = 2; potentialDivisor < number; potentialDivisor++) {
-            if (number % potentialDivisor == 0) {
-                isPremier = false;
-
-                break;
+        for (int potentialDivisor = 2; potentialDivisor < potentialPrimeNumber; potentialDivisor++) {
+            if (potentialPrimeNumber % potentialDivisor == 0) {
+                return false;
             }
 
         }
-        return isPremier;
+        return true;
     }
 }

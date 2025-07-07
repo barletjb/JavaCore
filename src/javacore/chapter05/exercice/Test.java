@@ -1,4 +1,5 @@
 package javacore.chapter05.exercice;
 
-public class Test2 {
+public class Test {
+    int number;
 }

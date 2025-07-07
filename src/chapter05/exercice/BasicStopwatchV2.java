@@ -2,42 +2,52 @@ package chapter05.exercice;
 
 public class BasicStopwatchV2 {
 
-    private int second;
-    private int min;
-    private int hour;
+    String nameStopWatch;
+    int second;
+    int min;
+    int hour;
+
+    public BasicStopwatchV2(String name) {
+        this.nameStopWatch = name;
+        this.second = 0;
+        this.min = 0;
+        this.hour = 0;
+
+    }
+
+    public void launch(int durationInMin) throws InterruptedException {
+
+        System.out.println(this.nameStopWatch + " :");
+
+        for (int i = 0; i < durationInMin * 60; i++) {
+            displayTime();
+            Thread.sleep(1000);
+            second++;
+
+            if (second == 60) {
+                second = 0;
+                min++;
+            }
+            if (min == 60) {
+                min = 0;
+                hour++;
+            }
+        }
+    }
+
+    public void displayTime() {
+        String displaySecond = second < 10 ? "0" + second : "" + second;
+        String displayMin = min < 10 ? "0" + min : "" + min;
+        String displayHours = hour < 10 ? "0" + hour : "" + hour;
+        System.out.println(displayHours + ":" + displayMin + ":" + displaySecond);
+    }
 
     public static void main(String[] args) throws InterruptedException {
 
-        BasicStopwatchV2 stopwatch = new BasicStopwatchV2();
-        stopwatch.launch();
+        BasicStopwatchV2 stopwatchV2 = new BasicStopwatchV2("Oeufs durs");
+        stopwatchV2.launch(1);
 
-    }
-    public void launch() throws InterruptedException{
-        displayTime();
 
-        if (second ==60){
-            return;
-        }
-
-        Thread.sleep(1000);
-
-        if (second == 60) {
-            min++;
-            second = 0;
-        }
-        if (min == 60){
-            hour++;
-            min = 0;
-        }
-        second++;
-        launch();
-    }
-
-    public void displayTime(){
-        String displaySecond = second < 10  ? "0" + second  : "" + second;
-        String displayMin = min < 10  ? "0" + min  : "" + min;
-        String displayHours = hour < 10  ? "0" + hour  : "" + hour;
-        System.out.println(displayHours + ":" + displayMin + ":" + displaySecond);
     }
 
 }

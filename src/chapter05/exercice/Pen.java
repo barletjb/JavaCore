@@ -12,7 +12,7 @@ public class Pen {
 
     public void displayInformation() {
 
-        System.out.println("Nom: " + name + " | Couleur : " + color +
+        System.out.println("Nom : " + name + " | Couleur : " + color +
                 " | Prix : " + price + " | Quantité : " + stock
                 + " | Fabricant : " + company + " | Poids : " + weight + "g");
 

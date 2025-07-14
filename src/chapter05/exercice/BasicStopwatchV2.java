@@ -15,7 +15,7 @@ public class BasicStopwatchV2 {
 
     }
 
-    public void launch(int durationInMin) throws InterruptedException {
+    public void launch(double durationInMin) throws InterruptedException {
 
         System.out.println(this.nameStopWatch + " :");
 

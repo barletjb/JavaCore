@@ -13,35 +13,37 @@ public class FunctionRefactorCoinChangerV1 {
 
         public static void main(String[] args) {
 
-            //Facture totale
             int totalBill = 66;
-            //Montant payé
             int amountPaid = 87;
 
             int changeAmount = amountPaid - totalBill;
-            // Si le montant est insufisant
+
             if (changeAmount < 0) {
                 System.err.println("Solde Insuffisant, le montant manquant est de : " + (totalBill - amountPaid) + " €");
             }
             else if (amountPaid == 0) {
                 System.out.println("Le réglement est effectué, pas besoin de rendre la monnaie");
             }
-            // Condition en cascade avec % et /
+            // Cascading condition using % and /
             else {
-                // Combien de billet(s) de 50
+                // Number of 50€ bills
                 changeAmount = calculChange(changeAmount, EUR_50, BILLS);
-                // Combien de billet(s) de 20
+
+                // Number of 20€ bills
                 changeAmount = calculChange(changeAmount, EUR_20, BILLS);
-                // Combien de billet(s) de 10
+
+                // Number of 10€ bills
                 changeAmount = calculChange(changeAmount, EUR_10, BILLS);
-                // Combien de billet(s) de 5
+
+                // Number of 5€ bills
                 changeAmount = calculChange(changeAmount,EUR_5, BILLS);
-                // Combien de pièce(s) de 2
+
+                // Number of 2€ coins
                 changeAmount = calculChange(changeAmount,EUR_2, COINS);
-               // Combien de pièce(s) de 1
+
+                // Number of 1€ coins
                 changeAmount =calculChange(changeAmount, EUR_1, COINS);
 
-                // Affichage descriptif TOTAL à rendre
                 System.out.println("Le montant total à rendre est de : " + (amountPaid - totalBill) + " €");
             }
 

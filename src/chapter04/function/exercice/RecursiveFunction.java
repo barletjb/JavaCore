@@ -2,18 +2,20 @@ package chapter04.function.exercice;
 
 public class RecursiveFunction {
 
+    public static final int END_NUMBER = 1000;
+
     public static void main(String[] args) {
 
-    afficherNombre(1, 10000);
+    afficherNombre(1, END_NUMBER);
 
     }
-    public static void afficherNombre(int startNumber, int endNumber){
-        System.out.println(startNumber);
-        if (startNumber == endNumber){
+    public static void afficherNombre(int currentNumber, final int END_NUMBER){
+        System.out.println(currentNumber);
+        if (currentNumber == END_NUMBER){
             return;
         }
-        startNumber++;
-        afficherNombre(startNumber, endNumber);
+
+        afficherNombre(++currentNumber, END_NUMBER);
 
     }
 }

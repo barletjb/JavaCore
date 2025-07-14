@@ -25,34 +25,23 @@ public class FunctionRefactorFullPyramid {
      * @param stars      character used to represent stars
      */
     public static void displayPyramid(int countSpace, int countStars, char space, char stars) {
-        displaySpaces(countSpace, space);
-        displayStars(countStars, stars);
+        displayCharacter(space , countSpace);
+        displayCharacter(stars , countStars);
 
     }
 
     /**
-     * Prints a given number of space characters.
+     * Prints a given number of characters.
+     * @param character the character
      * @param count     number of space characters to print
-     * @param character the space character (usually ' ')
      */
-    public static void displaySpaces(int count, char character) {
+    public static void displayCharacter(char character, int count ) {
         while (count != 0) {
             System.out.print(character);
             count--;
         }
     }
 
-    /**
-     * Prints a given number of star characters.
-     * @param count     number of star characters to print
-     * @param character the star character (usually '*')
-     */
-    public static void displayStars(int count, char character) {
-        while (count != 0) {
-            System.out.print(character);
-            count--;
-        }
-    }
 }
 
 

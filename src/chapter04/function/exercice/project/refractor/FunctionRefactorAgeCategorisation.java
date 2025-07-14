@@ -19,19 +19,11 @@ public class FunctionRefactorAgeCategorisation {
     }
 
     /**
-     * Simple display
-     * @param age
-     */
-    private static void displayOnlyAge(int age){
-        System.out.println("Votre age est de : " + age + " ans.");
-    }
-
-    /**
      * Display generation
      * @param age
      */
     public static void displayGeneration(int age){
-        displayOnlyAge(age);
+        System.out.println("Votre age est de : " + age + " ans.");
         if ( age < CHILD_AGE ) {
             System.out.println("Vous êtes un enfant.");
         } else if (age < YOUNG_AGE ) {

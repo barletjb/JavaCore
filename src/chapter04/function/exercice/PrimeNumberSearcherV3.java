@@ -11,9 +11,7 @@ public class PrimeNumberSearcherV3 {
         int potentialPrimeNumber = 2;
         while (compteurPremiers < 50) {
 
-            boolean isPremier = isPrimeNumber(potentialPrimeNumber);
-
-            if (isPremier) {
+            if (isPrimeNumber(potentialPrimeNumber)) {
                 compteurPremiers++;
                 premiers += potentialPrimeNumber + " ";
             }

@@ -9,9 +9,9 @@ public class FunctionRefactorArmstrongNumbers {
 
         while (armstrongCount < 10) {
 
-            boolean isPerfectNumber = testArmstrongNumber(potentialArmstrongNumber);
+            boolean isArmstrongNumber = isArmstrongNumber(potentialArmstrongNumber);
 
-            if (isPerfectNumber) {
+            if (isArmstrongNumber) {
                 armstrongCount++;
                 System.out.println("Ce nombre : " + potentialArmstrongNumber + " est un nombre Armstrong");
             }
@@ -29,7 +29,7 @@ public class FunctionRefactorArmstrongNumbers {
      * @param potentialArmstrongNumber the number to test
      * @return true if the number is an Armstrong number, false otherwise
      */
-    public static boolean testArmstrongNumber(int potentialArmstrongNumber) {
+    public static boolean isArmstrongNumber(int potentialArmstrongNumber) {
         int sumOfPowers = 0;
         int copyNumber = potentialArmstrongNumber;
 

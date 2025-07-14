@@ -6,7 +6,9 @@ public class FunctionRefactorAgeBasedDiscount {
 
     public static final int YOUNG_AGE = 25;
     public static final int OLD_AGE = 65;
+
     public static final double NORMAL_PRICE = 50.0;
+
     public static final double YOUNG_REDUC = 0.25;
     public static final double OLD_REDUC = 0.75;
 
@@ -17,55 +19,48 @@ public class FunctionRefactorAgeBasedDiscount {
         System.out.println("Entrez votre âge");
         int age = scanner.nextInt();
 
-        displayPrice(age);
+        double discountRate = getDiscountRateByAge(age);
+        double finalPrice = calculatePrice(NORMAL_PRICE, discountRate);
+
+        System.out.println("Le prix  de votre billet est de " + finalPrice + " €");
 
     }
 
     /**
-     * Calculates and displays the ticket price based on the user's age.
-     * Applies a youth discount for users aged 25 or under, and a senior discount
-     * for users aged 65 or older. Then displays the applicable message and final price.
-     * @param age the age of the user
+     * Determines the discount rate to apply based on the user's age.
+     * - Applies a YOUNG_REDUC discount for customers aged 25 or less.
+     * - Applies a OLD_REDUC discount for customers aged 65 or more.
+     * - No discount for others.
+     *
+     * @param age the age of the customer
+     * @return the discount rate (0.0 if no discount)
      */
-    public static void displayPrice(int age) {
-
-        double price = calculatePrice(age);
+    public static double getDiscountRateByAge(int age) {
 
         if (age <= YOUNG_AGE) {
             System.out.println("le Forfait Jeune s'applique.");
+            return YOUNG_REDUC;
         }
         if (age >= OLD_AGE) {
             System.out.println("le Forfait Senior s'applique.");
+            return OLD_REDUC;
         }
-        displayOnlyPrice(price);
+
+        return 0;
     }
 
     /**
-     * Simple display
+     * Calculates the final price after applying the discount.
      *
-     * @param price
+     * @param NORMAL_PRICE the base price without any discount
+     * @param discountRate the discount rate to apply (between 0.0 and 1.0)
+     * @return the final ticket price after discount
      */
-    private static void displayOnlyPrice(double price) {
-        System.out.println("Le prix de votre billet est de : " + price + " €");
+    private static double calculatePrice(final double NORMAL_PRICE, double discountRate) {
+
+        return NORMAL_PRICE * (1.0 - discountRate);
     }
 
-    /**
-     * Calcul inputPrice
-     *
-     * @param age
-     * @return price
-     */
-    private static double calculatePrice(int age) {
-
-        if (age <= YOUNG_AGE) {
-            return NORMAL_PRICE * (1.0 - YOUNG_REDUC);
-        }
-        if (age >= OLD_AGE) {
-            return NORMAL_PRICE * (1.0 - OLD_REDUC);
-        }
-
-        return NORMAL_PRICE;
-    }
 
 }
 

@@ -20,32 +20,46 @@ public class CarImprovement {
         this.color = color;
         this.price = price;
         this.odometer = 0;
-        this.isEngineStarted = false;
 
-        this.displayInformations();
     }
 
-    public void run(double distance) {
+    public boolean startEngine() {
+
+        this.isEngineStarted = true;
+        System.out.println("Le moteur s'allume. La voiture démarre");
+        return isEngineStarted;
+    }
+
+    public boolean stopEngine(){
+
+        this.isEngineStarted = false;
+        System.out.println("Le moteur s'éteint. La voiture est à l'arrêt");
+        return  isEngineStarted;
+
+    }
+
+    public void startRun(int distance){
 
         if (distance <= 0) {
             System.out.println("La distance doit être positive.");
             return;
         }
 
-        this.isEngineStarted = true;
-        System.out.println("La voiture démarre, elle s'apprête à rouler sur " + distance + " kms.");
+        if (this.isEngineStarted) {
+            System.out.println("La voiture parcours " + distance + "kms");
+            odometer += distance;
+        }
+        else {
+            System.out.println("Le moteur est à l'arrêt");
+        }
 
-        this.isEngineStarted = false;
-        odometer += distance;
-
-        System.out.println("La voiture s'arrête, elle vient d'effectuer " + distance + " kms.");
     }
 
     public void displayInformations() {
 
         System.out.println("N° Série : " + this.serialNumber + " | Marque : " + this.brand
                 + " | Modèle : " + this.model + " | Couleur : " + this.color
-                + " | Kilométrage : " + this.odometer);
+                + " | Kilométrage : " + this.odometer + " kms");
 
     }
 
@@ -54,9 +68,11 @@ public class CarImprovement {
         CarImprovement car1 = new CarImprovement("RZGRUZHR", "RENAULT",
                 "CLIO 3", "Blanche", 2500);
 
-        car1.run(2000);
+        car1.startEngine();
+        car1.startRun(2000);
+        car1.stopEngine();
         car1.displayInformations();
-        System.out.println(car1.isEngineStarted);
+
     }
 }
 

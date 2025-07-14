@@ -13,13 +13,10 @@ public class FunctionRefactorCoinChangerV2 {
 
     public static void main(String[] args) {
 
-        //Facture totale
+
         int totalBill = 73;
-        //Montant payé
         int amountPaid = 200;
 
-
-        //Initialisation stock distributeur
         int stockOf5O = 1;
         int stockOf20 = 2;
         int stockOf10 = 3;
@@ -33,21 +30,19 @@ public class FunctionRefactorCoinChangerV2 {
 
         int changeAmount = amountPaid - totalBill;
 
-        // Si le montant est insuffisant
         if (changeAmount < 0) {
             System.err.println("Solde Insuffisant, le montant manquant est de : " + (totalBill - amountPaid) + " €");
         } else if (changeAmount == 0) {
             System.out.println("Le réglèment est accepté, pas besoin de rendre la monnaie");
         }
-        // Si solde distributeur insuffisant
         else if (changeAmount > totalDistributeur) {
             System.err.println("Le solde du distributeur est insuffisant : impossible de rendre la monnaie");
         }
 
-        // Condition en cascade avec % et /
+        // Cascading condition using % and /
         else {
 
-            // Combien de billet(s) de 50
+            // Number of 50€ bills
             int requiredOf50 = calculNbChange(changeAmount, EUR_50, stockOf5O);
             if (requiredOf50 > 0) {
                 changeAmount -= requiredOf50 * EUR_50;
@@ -55,7 +50,7 @@ public class FunctionRefactorCoinChangerV2 {
                 displayChange(EUR_50, requiredOf50, BILLS);
             }
 
-            // Combien de billet(s) de 20
+            // Number of 20€ bills
             int requiredOf20 = calculNbChange(changeAmount, EUR_20, stockOf20);
             if (requiredOf20 > 0) {
                 changeAmount -= requiredOf20 * EUR_20;
@@ -63,7 +58,7 @@ public class FunctionRefactorCoinChangerV2 {
                 displayChange(EUR_20, requiredOf20, BILLS);
             }
 
-            // Combien de billet(s) de 10
+            // Number of 10€ bills
             int requiredOf10 = calculNbChange(changeAmount, EUR_10, stockOf10);
             if (requiredOf10 > 0) {
                 changeAmount -= requiredOf10 * EUR_10;
@@ -71,7 +66,7 @@ public class FunctionRefactorCoinChangerV2 {
                 displayChange(EUR_10, requiredOf10, BILLS);
             }
 
-            // Combien de billet(s) de 5
+            // Number of 5€ bills
             int requiredOf5 = calculNbChange(changeAmount, EUR_5, stockOf5);
             if (requiredOf5 > 0) {
                 changeAmount -= requiredOf5 * EUR_5;
@@ -79,7 +74,7 @@ public class FunctionRefactorCoinChangerV2 {
                 displayChange(EUR_5, requiredOf5, BILLS);
             }
 
-            // Combien de pièce(s) de 2
+            // Number of 2€ coins
             int requiredOf2 = calculNbChange(changeAmount, EUR_2, stockOf2);
             if (requiredOf2 > 0) {
                 changeAmount -= requiredOf2 * EUR_2;
@@ -87,7 +82,7 @@ public class FunctionRefactorCoinChangerV2 {
                 displayChange(EUR_2, requiredOf2, COINS);
             }
 
-            // Combien de pièce(s) de 1
+            // Number of 1€ coins
             int requiredOf1 = calculNbChange(changeAmount, EUR_1, stockOf1);
             if (requiredOf1 > 0) {
                 changeAmount -= requiredOf1 * EUR_1;
@@ -95,7 +90,6 @@ public class FunctionRefactorCoinChangerV2 {
                 displayChange(EUR_1, requiredOf1, COINS);
             }
 
-            // Affichage descriptif TOTAL à rendre
             System.out.println("Le montant totale à rendre est de : " + (amountPaid - totalBill) + " €");
 
         }
@@ -110,7 +104,7 @@ public class FunctionRefactorCoinChangerV2 {
      * @param stockOf      the number of coins or bills available
      * @return the number to return, limited by stock and change amount
      */
-    public static int calculNbChange(int changeAmount, int EUR, int stockOf) {
+    public static int calculNbChange(int changeAmount, final int EUR, int stockOf) {
         if (changeAmount >= EUR && stockOf > 0) {
             int requiredOf = changeAmount / EUR;
 

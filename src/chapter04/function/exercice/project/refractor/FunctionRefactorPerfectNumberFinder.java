@@ -4,15 +4,15 @@ public class FunctionRefactorPerfectNumberFinder {
 
     public static void main(String[] args) {
 
-        int end = 10000;
+        int maxNumberAnalyzed = 10000;
         int perfectNumberCount = 0;
         String perfectNumbersList = "";
 
-        for (int start = 2; start <= end; start++) {
+        for (int potentialPerfectNumber = 2; potentialPerfectNumber <= maxNumberAnalyzed; potentialPerfectNumber++) {
 
-            if (isPerfectNumber(start)) {
+            if (isPerfectNumber(potentialPerfectNumber)) {
                 perfectNumberCount++;
-                perfectNumbersList += start + " ";
+                perfectNumbersList += potentialPerfectNumber + " ";
             }
         }
 

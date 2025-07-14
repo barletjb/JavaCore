@@ -10,22 +10,29 @@ public class LibrairyBook {
     boolean isAvailable;
 
 
-    public String getBookInfo(String isbn){
-       return "Titre : " + title + " | Auteur : " + author + " | Année de publication : " + yearOfPublication;
+    public String getBookInfo(){
+       return "ISBN : " + this.isbn + " | Titre : " + this.title + " | Auteur : " + this.author
+               + " | Année de publication : " + this.yearOfPublication;
     }
 
-    public void displayAvailability(String isbn) {
-
-        if (isAvailable){
-            System.out.println(getBookInfo(isbn) + "  : est disponible.");
-            isAvailable = false;
+    public void displayAvailability() {
+        if (this.isAvailable) {
+            System.out.println(this.getBookInfo() + " | Disponibilité : en stock.");
+        } else {
+            System.out.println(this.getBookInfo() + " | Disponibilité : n'est plus disponible.");
         }
-        else {
-            System.out.println(getBookInfo(isbn) + " : n'est pas disponbile.");
-        }
-
     }
 
+    public boolean makeReservation() {
+        if (this.isAvailable) {
+            this.isAvailable = false;
+            System.out.println("La réservation est effectuée.");
+            return true;
+        } else {
+            System.out.println("La réservation a échoué : livre non disponible.");
+            return false;
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -37,10 +44,10 @@ public class LibrairyBook {
         book1.yearOfPublication = "1960";
         book1.isAvailable = true;
 
-        book1.displayAvailability(book1.isbn);
-        System.out.println(book1.isAvailable);
+        book1.makeReservation();
+        book1.displayAvailability();
 
-        book1.displayAvailability("ISBN-1");
+
 
 
     }

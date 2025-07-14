@@ -3,15 +3,17 @@ package chapter04.function.exercice;
 
 public class RecursiveFibonacci {
 
+    public static final int MAX_ROUND = 20;
+
     public static void main(String[] args) {
 
-        fonctionFibonacci(0, 1, 0);
+        printFibonacciRecursively(0, 1, 0, MAX_ROUND);
 
     }
 
-    public static void fonctionFibonacci (int firstValue, int secondValue, int round){
+    public static void printFibonacciRecursively(int firstValue, int secondValue, int round, final int MAX_ROUND){
 
-        if (round == 20){
+        if (round == MAX_ROUND){
             return;
         }
 
@@ -21,7 +23,7 @@ public class RecursiveFibonacci {
 
         nextValue = firstValue + secondValue;
 
-        fonctionFibonacci(secondValue, nextValue,round + 1);
+        printFibonacciRecursively(secondValue, nextValue,round + 1, MAX_ROUND);
 
 
     }

@@ -1,4 +1,4 @@
-package chapter04.function.exercice.project.refractor;
+package chapter04.function.exercice.project.refactor;
 
 import java.util.Scanner;
 

@@ -22,23 +22,23 @@ public class BasicStopwatchV2 {
         for (int i = 0; i < durationInMin * 60; i++) {
             displayTime();
             Thread.sleep(1000);
-            second++;
+            this.second++;
 
-            if (second == 60) {
-                second = 0;
-                min++;
+            if (this.second == 60) {
+                this.second = 0;
+                this.min++;
             }
-            if (min == 60) {
-                min = 0;
-                hour++;
+            if (this.min == 60) {
+                this.min = 0;
+                this.hour++;
             }
         }
     }
 
     public void displayTime() {
-        String displaySecond = second < 10 ? "0" + second : "" + second;
-        String displayMin = min < 10 ? "0" + min : "" + min;
-        String displayHours = hour < 10 ? "0" + hour : "" + hour;
+        String displaySecond = this.second < 10 ? "0" + this.second : "" + this.second;
+        String displayMin = this.min < 10 ? "0" + this.min : "" + this.min;
+        String displayHours = this.hour < 10 ? "0" + this.hour : "" + this.hour;
         System.out.println(displayHours + ":" + displayMin + ":" + displaySecond);
     }
 

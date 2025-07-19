@@ -28,7 +28,7 @@ public class UserQuestionnaire {
     }
 
     public void displayInformationwWithResult(){
-        displayInformations();
+        this.displayInformations();
         System.out.println("Le resultat de votre calcul est : " + this.userResult);
     }
 

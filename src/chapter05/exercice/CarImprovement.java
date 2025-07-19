@@ -47,7 +47,7 @@ public class CarImprovement {
 
         if (this.isEngineStarted) {
             System.out.println("La voiture parcours " + distance + "kms");
-            odometer += distance;
+            this.odometer += distance;
         }
         else {
             System.out.println("Le moteur est à l'arrêt");

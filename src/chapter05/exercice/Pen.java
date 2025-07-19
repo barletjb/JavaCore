@@ -12,9 +12,9 @@ public class Pen {
 
     public void displayInformation() {
 
-        System.out.println("Nom : " + name + " | Couleur : " + color +
-                " | Prix : " + price + " | Quantité : " + stock
-                + " | Fabricant : " + company + " | Poids : " + weight + "g");
+        System.out.println("Nom : " + this.name + " | Couleur : " + this.color +
+                " | Prix : " + this.price + " | Quantité : " + this.stock
+                + " | Fabricant : " + this.company + " | Poids : " + this.weight + "g");
 
     }
 

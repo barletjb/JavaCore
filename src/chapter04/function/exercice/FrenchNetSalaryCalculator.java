@@ -26,6 +26,7 @@ public class FrenchNetSalaryCalculator {
 
     public static void main(String[] args) {
 
+
         System.out.println("Affichage du SMIC Français :");
         displayFrenchSalary(FRENCH_SMIC);
         System.out.println();

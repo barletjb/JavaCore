@@ -24,21 +24,28 @@ public class CarImprovement {
     }
 
     public boolean startEngine() {
-
+        if (this.isEngineStarted) {
+            System.out.println("Le moteur est déjà allumé. ");
+            return isEngineStarted;
+        }
         this.isEngineStarted = true;
         System.out.println("Le moteur s'allume. La voiture démarre");
         return isEngineStarted;
     }
 
-    public boolean stopEngine(){
+    public boolean stopEngine() {
 
+        if (!this.isEngineStarted){
+            System.out.println("Le moteur est déjà éteint");
+            return isEngineStarted;
+        }
         this.isEngineStarted = false;
         System.out.println("Le moteur s'éteint. La voiture est à l'arrêt");
-        return  isEngineStarted;
+        return isEngineStarted;
 
     }
 
-    public void startRun(int distance){
+    public void startRun(int distance) {
 
         if (distance <= 0) {
             System.out.println("La distance doit être positive.");
@@ -48,8 +55,7 @@ public class CarImprovement {
         if (this.isEngineStarted) {
             System.out.println("La voiture parcours " + distance + "kms");
             this.odometer += distance;
-        }
-        else {
+        } else {
             System.out.println("Le moteur est à l'arrêt");
         }
 

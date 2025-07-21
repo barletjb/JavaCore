@@ -41,7 +41,7 @@ public class FunctionRefactorAgeBasedDiscount {
             System.out.println("le Forfait Jeune s'applique.");
             return YOUNG_REDUC;
         }
-        if (age >= OLD_AGE) {
+        else if (age >= OLD_AGE) {
             System.out.println("le Forfait Senior s'applique.");
             return OLD_REDUC;
         }

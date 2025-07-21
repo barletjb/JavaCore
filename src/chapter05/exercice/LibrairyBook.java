@@ -16,11 +16,14 @@ public class LibrairyBook {
     }
 
     public void displayAvailability() {
+        String infos = this.getBookInfo() + " | Disponibilité : ";
+
         if (this.isAvailable) {
-            System.out.println(this.getBookInfo() + " | Disponibilité : en stock.");
+            infos += " en stock";
         } else {
-            System.out.println(this.getBookInfo() + " | Disponibilité : n'est plus disponible.");
+            infos += " n'est plus disponible.";
         }
+        System.out.println(infos);
     }
 
     public boolean makeReservation() {

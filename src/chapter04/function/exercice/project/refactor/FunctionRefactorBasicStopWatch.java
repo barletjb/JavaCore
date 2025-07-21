@@ -24,19 +24,23 @@ public class FunctionRefactorBasicStopWatch {
                 min = 0;
             }
 
-            System.out.println(displayTime(hour) + ":" + displayTime(min) + ":" + displayTime(second));
+            System.out.println(displayTime(hour, min, second));
 
             second++;
         }
     }
 
     /**
-     * Formats a time value by adding a leading zero if it is less than 10.
-     * @param time the time value (hours, minutes, or seconds)
-     * @return a string representing the time value with two digits
+     * Returns a formatted time string in the format HH:MM:SS.
+     * Each component (hour, minute, second) is padded with a leading zero if it is less than 10.
+     *
+     * @param hour   the hour component of the time (0–23)
+     * @param min    the minute component of the time (0–59)
+     * @param second the second component of the time (0–59)
+     * @return a string representing the time in "HH:MM:SS" format
      */
-    public static String displayTime(int time) {
-        return time < 10 ? "0" + time : "" + time;
+    public static String displayTime(int hour, int min, int second) {
+        return (hour < 10 ? "0" + hour : "" + hour) + ":" + (min < 10 ? "0" + min : "" + min) + ":" + (second < 10 ? "0" + second : "" + second);
     }
 }
 

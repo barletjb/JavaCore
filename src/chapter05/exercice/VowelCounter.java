@@ -6,13 +6,22 @@ public class VowelCounter {
 
     private static final String VOWELS = "aeiouy";
 
-    public static char[] searchVowelsInString(String string) {
 
-        char[] vowelsFound = new char[string.length()];
+    /**
+     * Searches and collects all vowels from the provided string.
+     *
+     * @param input The string to search for vowels.
+     * @return An array containing the vowels found in the input string.
+     *         The array length matches the input length, but only the first 'n' elements (up to the count of vowels)
+     *         are valid vowels.
+     */
+    public static char[] searchVowelsInString(String input) {
+
+        char[] vowelsFound = new char[input.length()];
         int count = 0;
 
-        for (int index = 0; index < string.length(); index++) {
-            char letter = string.charAt(index);
+        for (int index = 0; index < input.length(); index++) {
+            char letter = input.charAt(index);
 
             if (VOWELS.indexOf(letter) != -1) {
                 vowelsFound[count] = letter;
@@ -22,12 +31,16 @@ public class VowelCounter {
         return vowelsFound;
     }
 
-
-    public static void displayVowels(char[] vowelsFound) {
+    /**
+     * Displays the vowels in the given array, separated by commas.
+     *
+     * @param vowels The array of vowels to display.
+     */
+    public static void displayVowels(char[] vowels) {
         System.out.println("------------- Affichage des voyelles du String  ------------- ");
-        for (int i = 0; i < vowelsFound.length; i++) {
-            System.out.print(vowelsFound[i]);
-            if (i < vowelsFound.length - 1) {
+        for (int i = 0; i < vowels.length; i++) {
+            System.out.print(vowels[i]);
+            if (i < vowels.length - 1) {
                 System.out.print(",");
             } else {
                 System.out.print(".");
@@ -53,10 +66,11 @@ public class VowelCounter {
                 "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui " +
                 "officia deserunt mollit anim id est laborum.";
 
+        // Process Lorem Ipsum text
         char[] vowelsFound = searchVowelsInString(loremIpsum);
         displayVowels(vowelsFound);
 
-       // User Choice :
+       // User Input
         System.out.print("Entrez votre String : ");
         String userString = scanner.nextLine();
         char[] vowelsFound2 = searchVowelsInString(userString);
@@ -68,5 +82,7 @@ public class VowelCounter {
             System.out.println("Lettre '" + targetLetter + "' trouvée à l'indice : " + index);
             index = userString.indexOf(targetLetter, index + 1);
         }
+
+        scanner.close();
     }
 }

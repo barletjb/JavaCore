@@ -10,7 +10,7 @@ public class LogAnalyzer {
         String filterJavaCore = "JavaCoreApp";
 
         String[] globalMessages = serverLogs.split(":::");
-        String[] javaCoreMessages = new String[20];
+        String[] javaCoreMessages = new String[globalMessages.length];
 
         int matchCount = 0;
 

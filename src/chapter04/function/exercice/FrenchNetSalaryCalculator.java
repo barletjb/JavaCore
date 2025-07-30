@@ -21,26 +21,26 @@ public class FrenchNetSalaryCalculator {
     public static final float FRENCH_MIDDLE_SALARY = 22.50f;
     public static final float FRENCH_UPPER_SALARY = 35.00f;
 
-    public static double weekHour = 38.5;
-    public static double socialTaxes = 10.5;
-
     public static void main(String[] args) {
+
+        double weekHour = 38.5;
+        double socialChargePercentage = 25.0;
 
 
         System.out.println("Affichage du SMIC Français :");
-        displayFrenchSalary(FRENCH_SMIC);
+        displayFrenchSalary(FRENCH_SMIC, weekHour, socialChargePercentage);
         System.out.println();
 
         System.out.println("Affichage du Salaire Médian Français :");
-        displayFrenchSalary(FRENCH_MEDIAN_SALARY);
+        displayFrenchSalary(FRENCH_MEDIAN_SALARY, weekHour, socialChargePercentage);
         System.out.println();
 
         System.out.println("Affichage du Salaire Moyen Français :");
-        displayFrenchSalary(FRENCH_MIDDLE_SALARY);
+        displayFrenchSalary(FRENCH_MIDDLE_SALARY, weekHour, socialChargePercentage);
         System.out.println();
 
         System.out.println("Affichage du Seuil de Richesse Français :");
-        displayFrenchSalary(FRENCH_UPPER_SALARY);
+        displayFrenchSalary(FRENCH_UPPER_SALARY, weekHour, socialChargePercentage);
         System.out.println();
 
     }
@@ -51,7 +51,7 @@ public class FrenchNetSalaryCalculator {
      * @param hourlyGrossSalary the hourly gross salary
      * @return the annual gross salary
      */
-    public static double calculateAnnualGrossSalary(double hourlyGrossSalary) {
+    public static double calculateAnnualGrossSalary(double hourlyGrossSalary, double weekHour) {
         return (hourlyGrossSalary * weekHour) * WEEKS_YEARS;
     }
 
@@ -136,14 +136,14 @@ public class FrenchNetSalaryCalculator {
      * Each step is printed to the console with the corresponding amount.
      * @param hourlySalary The hourly gross wage in euros.
      */
-    public static void displayFrenchSalary (double hourlySalary){
+    public static void displayFrenchSalary (double hourlySalary, double weekhour, double socialChargePercentage){
         System.out.println("-------------------------");
         System.out.println("* Votre salaire Brut annuel");
-        double annualSalaryBrut = calculateAnnualGrossSalary(hourlySalary);
+        double annualSalaryBrut = calculateAnnualGrossSalary(hourlySalary, weekhour);
         System.out.println("--> " + annualSalaryBrut + " €");
 
         System.out.println("* Salaire net après cotisations");
-        double annualSalaryNet = applySocialCharges(annualSalaryBrut, socialTaxes);
+        double annualSalaryNet = applySocialCharges(annualSalaryBrut, socialChargePercentage);
         System.out.println("--> " + annualSalaryNet + " €");
 
         System.out.println("* Salaire net après impositions");

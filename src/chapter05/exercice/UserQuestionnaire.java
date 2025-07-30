@@ -16,9 +16,7 @@ public class UserQuestionnaire {
     }
 
     public UserQuestionnaire(String userSurname, int userAge, String userChoice, double userResult){
-        this.userSurname = userSurname;
-        this.userAge = userAge;
-        this.userChoice = userChoice;
+        this(userSurname,userAge,userChoice);
         this.userResult = userResult;
     }
 

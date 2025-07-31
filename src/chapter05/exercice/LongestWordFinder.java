@@ -21,22 +21,19 @@ public class LongestWordFinder {
         // Without String.split(String regex)
         longestWord = "";
         String currentWord = "";
-        int wordIndex = 0;
-        String[] words2 = new String[15];
 
         for (int index = 0; index < text.length(); index++) {
-            char c = text.charAt(index);
+            char letter = text.charAt(index);
 
-            if (c != ' '){
-                currentWord += c;
+            if (letter != ' '){
+                currentWord += letter;
+            }
+            else if (currentWord.length() > longestWord.length()){
+                longestWord = currentWord;
+                currentWord = "";
             }
             else {
-                words2[wordIndex] = currentWord;
-                if (longestWord.length() < words2[wordIndex].length()){
-                    longestWord = words2[wordIndex];
-                }
-                wordIndex++;
-                currentWord = "";
+                currentWord="";
             }
         }
 

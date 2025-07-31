@@ -6,9 +6,15 @@ public class VowelCounter {
 
     private static final String VOWELS = "aeiouy";
 
+    /**
+     * Counts the number of occurrences of each vowel in the given text.
+     *
+     * @param text the input string to analyze
+     * @return an array of 6 integers representing the counts of 'a', 'e', 'i', 'o', 'u', 'y' respectively
+     */
     public static int[] countVowels(String text) {
 
-        int[] vowelsCount = new int[6];
+        int[] vowelCounts = new int[6];
         String lowerText = text.toLowerCase();
 
         for (int i = 0; i < VOWELS.length(); i++) {
@@ -18,35 +24,39 @@ public class VowelCounter {
             while ((index = lowerText.indexOf(vowel, index + 1)) != -1) {
                 switch (vowel) {
                     case 'a':
-                        vowelsCount[0]++;
+                        vowelCounts[0]++;
                         break;
                     case 'e':
-                        vowelsCount[1]++;
+                        vowelCounts[1]++;
                         break;
                     case 'i':
-                        vowelsCount[2]++;
+                        vowelCounts[2]++;
                         break;
                     case 'o':
-                        vowelsCount[3]++;
+                        vowelCounts[3]++;
                         break;
                     case 'u':
-                        vowelsCount[4]++;
+                        vowelCounts[4]++;
                         break;
                     case 'y':
-                        vowelsCount[5]++;
+                        vowelCounts[5]++;
                         break;
                 }
             }
         }
-        return vowelsCount;
+        return vowelCounts;
     }
 
-
-    public static void displayVowels(int[] countVowels) {
+    /**
+     * Displays the count of each vowel from the provided array.
+     *
+     * @param vowelCounts an array of vowel counts corresponding to 'a', 'e', 'i', 'o', 'u', 'y'
+     */
+    public static void displayVowels(int[] vowelCounts) {
         System.out.println("------------- Affichage des voyelles du String  ------------- ");
         for (int i = 0; i < VOWELS.length(); i++) {
             char vowel = VOWELS.charAt(i);
-            System.out.println("Le nombre de la voyelle (" + vowel + ") est de : " + countVowels[i]);
+            System.out.println("Le nombre de la voyelle (" + vowel + ") est de : " + vowelCounts[i]);
         }
         System.out.println();
     }
@@ -54,13 +64,6 @@ public class VowelCounter {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt" +
-                " ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris" +
-                " nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse " +
-                "cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui " +
-                "officia deserunt mollit anim id est laborum.");
-        System.out.println();
 
         String loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt " +
                 "ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris " +
@@ -70,7 +73,7 @@ public class VowelCounter {
 
 
         // Process Lorem Ipsum text
-        int[] vowelsFound = countVowels(loremIpsum);
+        int[] vowelsFound = countVowels(loremIpsum.toLowerCase());
         displayVowels(vowelsFound);
 
         // User Input

@@ -41,37 +41,58 @@ public class SubstitutionCipher {
         return textCrypt;
     }
 
-
     /**
-     * Encrypts a message using the substitution cipher and intermediate placeholders with {String.replaceAll}.
-     * The encryption is done in two passes:
-     *  - Each Latin letter is temporarily replaced by a placeholder (@index@).
-     *  - The placeholders are then replaced by the corresponding substitution characters.
-     * This avoids conflict when replacement letters are also part of the source text.
+     * Encrypts the given text using a substitution cipher with the provided alphabets.
+     * Each character from the {@code latinAlphabet} is replaced by the corresponding character
+     * in the {@code substitutionAlphabet}. A two-pass replacement using temporary placeholders
+     * avoids accidental collisions during substitution.
      *
-     * @param textToEncrypt the original plain text message to encrypt
-     * @return the encrypted message using the substitution cipher
+     * @param textToEncrypt        The original plain text to be encrypted.
+     * @param latinAlphabet        The source alphabet used in the original text.
+     * @param substitutionAlphabet The target alphabet used to replace characters from the source alphabet.
+     *
+     * @return The encrypted text with substitutions applied.
      */
-    public static String cryptMessageWithReplaceAll(String textToEncrypt){
+    public static String cipher(String textToEncrypt, String latinAlphabet, String substitutionAlphabet){
 
         String textCrypt = textToEncrypt;
 
-        for (int index = 0; index < LATIN_ALPHABET.length(); index++){
+        for (int index = 0; index < latinAlphabet.length(); index++){
 
-            String latinLetter = String.valueOf(LATIN_ALPHABET.charAt(index));
+            String latinLetter = String.valueOf(latinAlphabet.charAt(index));
             String substitutionNumber = ("@" + index + "@");
 
             textCrypt = textCrypt.replaceAll(latinLetter, substitutionNumber);
         }
 
-        for (int i = 0; i < SUBSTITUTION_ALPHABET.length(); i++) {
+        for (int i = 0; i < substitutionAlphabet.length(); i++) {
 
             String substitutionNumber = ("@" + i + "@");
-            String substitutionLetter = String.valueOf(SUBSTITUTION_ALPHABET.charAt(i));
+            String substitutionLetter = String.valueOf(substitutionAlphabet.charAt(i));
 
             textCrypt = textCrypt.replaceAll(substitutionNumber, substitutionLetter);
         }
 
+        return textCrypt;
+    }
+
+    /**
+     * Encrypts the given text using a substitution cipher repeatedly for a specified number of iterations.
+     * Each iteration applies the same substitution cipher as defined by the provided alphabets.
+     * This method internally uses {cipher(String, String, String)} to apply the cipher at each step.
+     *
+     * @param textToEncrypt        The original plain text to be encrypted.
+     * @param alphabet             The source alphabet used in the substitution.
+     * @param substitutionAlphabet The target alphabet used to replace characters from the source alphabet.
+     * @param cipherIterations     The number of times to apply the substitution cipher.
+     *
+     * @return The encrypted text after the specified number of cipher iterations.
+     */
+    public static String cipher(String textToEncrypt, String alphabet, String substitutionAlphabet, int cipherIterations){
+        String textCrypt = textToEncrypt;
+        for (int i = 0; i < cipherIterations; i++){
+            textCrypt = cipher(textCrypt,alphabet,substitutionAlphabet);
+        }
         return textCrypt;
     }
 
@@ -81,6 +102,11 @@ public class SubstitutionCipher {
 
         String textToEncrypt = "ce message secret ne doit pas arriver entre de mauvaises mains !";
 
+        String latinAlphabet = "abcdefghijklmnopqrstuvwxyz";
+
+        String substitutionAlphabet = "ntrhwbgeyjzlsoaqdmcuvfpxik";
+
+
         // Ecrivez le code ci-dessous
 
         System.out.println("-------------- METHODE n°1 --------------");
@@ -89,9 +115,12 @@ public class SubstitutionCipher {
         System.out.println();
 
         System.out.println("-------------- METHODE n°2 --------------");
-        String textCrypt2 = cryptMessageWithReplaceAll(textToEncrypt);
+        String textCrypt2 = cipher(textToEncrypt, latinAlphabet, substitutionAlphabet);
         System.out.println("Veuillez transmettre ce message de toute urgence : " + textCrypt2);
         System.out.println();
-        
+
+        String textCrypt3 = cipher("animal", latinAlphabet, substitutionAlphabet, 3);
+        System.out.println(textCrypt3);
+
     }
 }

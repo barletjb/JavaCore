@@ -1,5 +1,7 @@
 package chapter05.exercice;
 
+import java.util.Scanner;
+
 public class SubstitutionCipher {
 
     public static final String LATIN_ALPHABET = "abcdefghijklmnopqrstuvwxyz";
@@ -14,7 +16,7 @@ public class SubstitutionCipher {
      * @param textToEncrypt the original plain text message to encrypt
      * @return the encrypted message using the substitution cipher
      */
-    public static String cryptMessageWithoutReplaceAll(String textToEncrypt){
+    public static String cryptMessageWithoutReplaceAll(String textToEncrypt) {
 
         String textCrypt = "";
 
@@ -22,20 +24,11 @@ public class SubstitutionCipher {
 
             char targetLetter = textToEncrypt.charAt(index);
 
-            if (targetLetter == '!'){
+            if (LATIN_ALPHABET.indexOf(targetLetter) >= 0) {
+                textCrypt += SUBSTITUTION_ALPHABET.charAt(LATIN_ALPHABET.indexOf(targetLetter));
+
+            } else {
                 textCrypt += targetLetter;
-            }
-
-            for (int i = 0; i < LATIN_ALPHABET.length(); i++) {
-
-                if (targetLetter == LATIN_ALPHABET.charAt(i)) {
-                    textCrypt += SUBSTITUTION_ALPHABET.charAt(i);
-                    break;
-                }
-                else if (targetLetter == ' '){
-                    textCrypt += ' ';
-                    break;
-                }
             }
         }
         return textCrypt;
@@ -97,6 +90,68 @@ public class SubstitutionCipher {
     }
 
 
+    /**
+     * Prompts the user to enter a custom substitution alphabet via the console,
+     * and keeps asking until a valid input is provided.
+     * A valid substitution alphabet must contain exactly 26 unique lowercase letters (a–z)
+     * without any spaces, digits, or special characters.
+     *
+     * @return a valid substitution alphabet string entered by the user
+     */
+    public static String userChoice (){
+        Scanner s = new Scanner(System.in);
+        boolean isValid;
+        String substitutionAlpha;
+
+        do {
+            System.out.println("Veuillez saisir votre alphabet de substituion :");
+            substitutionAlpha = s.nextLine().toLowerCase().trim();
+
+            substitutionAlpha = substitutionAlpha.replaceAll(" ", "");
+            isValid = searchError(substitutionAlpha);
+
+        } while (!isValid);
+
+        s.close();
+
+        return substitutionAlpha;
+    }
+
+    /**
+     * Validates the given substitution alphabet.
+     * The alphabet is considered valid if:
+     * - It contains exactly 26 characters
+     * - Each character is a lowercase letter (a–z)
+     * - There are no duplicate characters
+     * Displays an error message if a rule is violated.
+     *
+     * @param userSubstitutionAlphabet the substitution alphabet string to validate
+     * @return {true} if the alphabet is valid; {false} otherwise
+     */
+    public static boolean searchError(String userSubstitutionAlphabet){
+
+        if (userSubstitutionAlphabet.length() != LATIN_ALPHABET.length() ){
+            System.err.println("Veuillez bien saisir 26 lettres");
+            return false;
+        }
+
+        for (int i = 0; i < userSubstitutionAlphabet.length(); i++){
+
+            char letter = userSubstitutionAlphabet.charAt(i);
+
+            if (userSubstitutionAlphabet.indexOf(letter,i + 1) >= 0){
+                System.err.println("Vous ne pouvez pas mettre plusieurs fois la même lettre");
+                return false;
+
+            } else if ( !(letter >= 'a' && letter <= 'z')) {
+                System.err.println("Vous ne devez saisir seulement que des lettres !");
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     public static void main(String[] args) {
 
@@ -119,8 +174,13 @@ public class SubstitutionCipher {
         System.out.println("Veuillez transmettre ce message de toute urgence : " + textCrypt2);
         System.out.println();
 
+        System.out.println("-------------- Test Cypher --------------");
         String textCrypt3 = cipher("animal", latinAlphabet, substitutionAlphabet, 3);
         System.out.println(textCrypt3);
+
+        System.out.println("-------------- Choix Utilisateur --------------");
+        String userSubstituionAlphabet = userChoice();
+        System.out.println();
 
     }
 }

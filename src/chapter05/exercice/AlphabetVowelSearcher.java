@@ -26,7 +26,7 @@ public class AlphabetVowelSearcher {
 
         for (int index = 0; index < alphabet.length(); index++) {
             char letter = alphabet.charAt(index);
-            if (vowels.indexOf(letter) > -1) {
+            if (vowels.indexOf(letter) >= 0) {
                 System.out.println("Cette lettre : (" + letter + ") est une voyelle. L'index correspondant dans l'alphabet est le (" + index + ").");
             }
         }

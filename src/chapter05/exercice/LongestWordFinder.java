@@ -28,7 +28,8 @@ public class LongestWordFinder {
             if (letter != ' '){
                 currentWord += letter;
             }
-            else if (currentWord.length() > longestWord.length()){
+
+            if (currentWord.length() > longestWord.length()){
                 longestWord = currentWord;
                 currentWord = "";
             }

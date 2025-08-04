@@ -180,7 +180,7 @@ public class SubstitutionCipher {
 
         System.out.println("-------------- Choix Utilisateur --------------");
         String userSubstituionAlphabet = userChoice();
-        System.out.println();
+        System.out.println("Votre alphabet de substitution pour crypter vos messages est le suivant : " + userSubstituionAlphabet);
 
     }
 }

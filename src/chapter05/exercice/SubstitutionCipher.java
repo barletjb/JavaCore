@@ -179,8 +179,8 @@ public class SubstitutionCipher {
         System.out.println(textCrypt3);
 
         System.out.println("-------------- Choix Utilisateur --------------");
-        String userSubstituionAlphabet = userChoice();
-        System.out.println("Votre alphabet de substitution pour crypter vos messages est le suivant : " + userSubstituionAlphabet);
+        String userSubstitutionAlphabet = userChoice();
+        System.out.println("Votre alphabet de substitution pour crypter vos messages est le suivant : " + userSubstitutionAlphabet);
 
     }
 }

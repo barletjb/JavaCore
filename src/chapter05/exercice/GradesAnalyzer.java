@@ -6,144 +6,180 @@ public class GradesAnalyzer {
 
     public static Scanner s = new Scanner(System.in);
 
-    public double average;
-    public double max;
-    public double min;
-    public int threshold;
-    public int countAboveThreshold;
-    public int percentageAboveThreshold;
+    public static final int RANGE_0_5_FROM = 0;
+    public static final int RANGE_0_5_TO   = 5;
 
-    public GradesAnalyzer(double average, double max, double min, int threshold, int count, int percentage) {
-        this.average = average;
-        this.max = max;
-        this.min = min;
-        this.threshold = threshold;
-        this.countAboveThreshold = count;
-        this.percentageAboveThreshold = percentage;
+    public static final int RANGE_6_10_FROM = 6;
+    public static final int RANGE_6_10_TO   = 10;
+
+    public static final int RANGE_11_15_FROM = 11;
+    public static final int RANGE_11_15_TO   = 15;
+
+    public static final int RANGE_16_20_FROM = 16;
+    public static final int RANGE_16_20_TO   = 20;
+
+    public final int THRESHOLD= 12;
+
+    private final int[] grades;
+
+    public GradesAnalyzer() {
+
+        this.grades = createArray();
+        enterRating(this.grades);
+
     }
 
-
-    public static void displayInformations(int[] userArray, GradesAnalyzer infos) {
-        System.out.println("---------- Notes saisies ----------");
-
-        for (int i = 0; i < userArray.length; i++) {
-            System.out.println("Note " + (i + 1) + " : " + userArray[i]);
+    // Gestion Exception pour erreur de taille
+    public static class SizeException extends Exception {
+        public SizeException(String message) {
+            super(message);
         }
-        System.out.println();
-        System.out.println("---------- Affichage ----------");
-        System.out.println("La moyenne de l'élève est de : " + infos.average + "/20");
-        System.out.println("La note la plus haute est : " + infos.max + "/20");
-        System.out.println("La note la plus petite est : " + infos.min + "/20");
-        System.out.println("Nombre de notes > " + infos.threshold  + " = " + infos.countAboveThreshold + " (soit " + infos.percentageAboveThreshold + "%)");
-
     }
 
-    public static void displayGradeRanges(int[] gradesArray) {
-        System.out.println("---------- Répartition par intervalle ----------");
-
-        int count_0_5 = getGradeCountBetweenRange(gradesArray, 0, 5);
-        int percent_0_5 = getPercentageAboveThreshold(gradesArray, count_0_5);
-        System.out.println("Nombre de notes [0 - 5] = " + count_0_5 + " (soit " + percent_0_5 + "%)");
-
-        int count_6_10 = getGradeCountBetweenRange(gradesArray, 6, 10);
-        int percent_6_10 = getPercentageAboveThreshold(gradesArray, count_6_10);
-        System.out.println("Nombre de notes [6 - 10] = " + count_6_10 + " (soit " + percent_6_10 + "%)");
-
-        int count_11_15 = getGradeCountBetweenRange(gradesArray, 11, 15);
-        int percent_11_15 = getPercentageAboveThreshold(gradesArray, count_11_15);
-        System.out.println("Nombre de notes [11 - 15] = " + count_11_15 + " (soit " + percent_11_15 + "%)");
-
-        int count_16_20 = getGradeCountBetweenRange(gradesArray, 16, 20);
-        int percent_16_20 = getPercentageAboveThreshold(gradesArray, count_16_20);
-        System.out.println("Nombre de notes [16 - 20] = " + count_16_20 + " (soit " + percent_16_20 + "%)");
+    public static void validateSize(int size) throws SizeException {
+        if (size < 2 || size > 30) {
+            throw new SizeException("Vous ne pouvez ajouter que 2 à 30 notes !");
+        }
     }
 
-    public static int[] createArray(){
-
+    public static int[] createArray() {
         int size;
-        boolean isValid;
 
-        do {
-            System.out.print("Combien de notes souhaitez-vous entrer (entre 2 et 30) ? ");
-            size = s.nextInt();
-
-            isValid = searchSizeError(size);
-
-        }while (!isValid);
-
+        while (true) {
+            try {
+                System.out.print("Combien de notes souhaitez-vous entrer (entre 2 et 30) ? ");
+                size = s.nextInt();
+                validateSize(size);
+                break;
+            } catch (SizeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
         return new int[size];
     }
 
-    public static void enterRating(int[] userArray){
 
-        boolean isValid;
+    // Gestion Exception pour erreur de note
+    public static class RatingException extends Exception {
+        public RatingException(String message) {
+            super(message);
+        }
+    }
+
+    public static void validateRating(int rating) throws RatingException {
+        if (rating < 0 || rating > 20) {
+            throw new RatingException("Votre note doit être comprise entre 0 et 20 !");
+        }
+    }
+
+    public static void enterRating(int[] userArray) {
         int rating;
 
-        for (int i = 0; i < userArray.length; i ++) {
-            do {
-                System.out.print("Entrez une note (entre 0 et 20) : ");
-                rating = s.nextInt();
-                isValid = searchRatingError(rating);
-
-            } while (!isValid);
-
-        userArray[i] = rating;
-
+        for (int i = 0; i < userArray.length; i++) {
+            while (true) {
+                try {
+                    System.out.print("Entrez une note (entre 0 et 20) : ");
+                    rating = s.nextInt();
+                    validateRating(rating);
+                    userArray[i] = rating;
+                    break;
+                } catch (RatingException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
         }
+    }
+
+    public void displayInformations() {
+        System.out.println("---------- Notes saisies ----------");
+
+        for (int i = 0; i < this.grades.length; i++) {
+            System.out.println("Note " + (i + 1) + " : " + this.grades[i]);
+        }
+        System.out.println();
+        System.out.println("---------- Affichage ----------");
+        System.out.println("La moyenne de l'élève est de : " + getAverage() + "/20");
+        System.out.println("La note la plus haute est : " + getMaxGrade() + "/20");
+        System.out.println("La note la plus petite est : " + getMinGrade() + "/20");
+        System.out.println("Nombre de notes > " + THRESHOLD + " = " + getGradeCountAboveThreshold() + " (soit " + getPercentageAboveThreshold() + "%)");
 
     }
 
-    public static double getAverage(int[] gradesArray){
+    public void displayGradeRanges() {
+        System.out.println("---------- Répartition par intervalle ----------");
+
+        int count_0_5 = getGradeCountBetweenRange(RANGE_0_5_FROM, RANGE_0_5_TO);
+        int percent_0_5 = getPercentageBetweenRange(RANGE_0_5_FROM,RANGE_0_5_TO);
+        System.out.println("Nombre de notes [0 - 5] = " + count_0_5 + " (soit " + percent_0_5 + "%)");
+
+        int count_6_10 = getGradeCountBetweenRange(RANGE_6_10_FROM, RANGE_6_10_TO);
+        int percent_6_10 = getPercentageBetweenRange(RANGE_6_10_FROM,RANGE_6_10_TO);
+        System.out.println("Nombre de notes [6 - 10] = " + count_6_10 + " (soit " + percent_6_10 + "%)");
+
+        int count_11_15 = getGradeCountBetweenRange(RANGE_11_15_FROM, RANGE_11_15_TO);
+        int percent_11_15 = getPercentageBetweenRange(RANGE_11_15_FROM,RANGE_11_15_TO);
+        System.out.println("Nombre de notes [11 - 15] = " + count_11_15 + " (soit " + percent_11_15 + "%)");
+
+        int count_16_20 = getGradeCountBetweenRange(RANGE_16_20_FROM, RANGE_16_20_TO);
+        int percent_16_20 = getPercentageBetweenRange(RANGE_16_20_FROM,RANGE_16_20_TO);
+        System.out.println("Nombre de notes [16 - 20] = " + count_16_20 + " (soit " + percent_16_20 + "%)");
+    }
+
+    public double getAverage() {
 
         double totalRating = 0;
 
-        for ( int i = 0 ; i < gradesArray.length; i++){
-            totalRating += gradesArray[i];
+        for (int i = 0; i < this.grades.length; i++) {
+            totalRating += this.grades[i];
         }
 
-        return totalRating / gradesArray.length;
+        return totalRating / this.grades.length;
     }
 
-    public static double getMinGrade(int[] gradesArray){
+    public double getMinGrade() {
 
-        double min = gradesArray[0];
+        double min = this.grades[0];
 
-        for ( int i = 0 ; i < gradesArray.length; i++){
-            if (min > gradesArray[i]){
-                min = gradesArray[i];
+        for (int i = 0; i < this.grades.length; i++) {
+            if (min > this.grades[i]) {
+                min = this.grades[i];
             }
         }
         return min;
     }
 
-    public static double getMaxGrade(int[] gradesArray){
-        double max = gradesArray[0];
+    public double getMaxGrade() {
+        double max = this.grades[0];
 
-        for ( int i = 0 ; i < gradesArray.length; i++){
-            if (max < gradesArray[i]){
-                max = gradesArray[i];
+        for (int i = 0; i < this.grades.length; i++) {
+            if (max < this.grades[i]) {
+                max = this.grades[i];
             }
         }
         return max;
     }
 
-    public static int getGradeCountAboveThreshold(int[] gradesArray, int threshold){
+    public int getGradeCountAboveThreshold() {
 
         int count = 0;
 
-        for ( int i = 0 ; i < gradesArray.length; i++){
-            if (gradesArray[i] > threshold){
+        for (int i = 0; i < this.grades.length; i++) {
+            if (this.grades[i] > THRESHOLD) {
                 count++;
             }
         }
         return count;
     }
 
-    public static int getGradeCountBetweenRange(int[] gradesArray, int from, int to) {
+    public int getPercentageAboveThreshold() {
+        return (getGradeCountAboveThreshold() * 100) / this.grades.length;
+    }
+
+    public int getGradeCountBetweenRange(int from, int to) {
         int count = 0;
 
-        for (int i = 0; i < gradesArray.length; i++) {
-            int grade = gradesArray[i];
+        for (int i = 0; i < this.grades.length; i++) {
+            int grade = this.grades[i];
             if (grade >= from && grade <= to) {
                 count++;
             }
@@ -151,50 +187,17 @@ public class GradesAnalyzer {
         return count;
     }
 
-    public static int getPercentageAboveThreshold(int[] gradesArray, int count){
-        return (count * 100) / gradesArray.length;
-    }
-
-
-    public static boolean searchSizeError(int size){
-
-        if (size >= 2 && size <= 30){
-            return true;
-        } else {
-            System.out.println("Vous ne pouvez ajouter que 2 à 30 notes !");
-            return false;
-        }
-    }
-
-    public static boolean searchRatingError(int userRating){
-
-        if (userRating >= 0 && userRating <= 20){
-            return true;
-        } else {
-            System.out.println("Votre note doit être comprise entre 0 et 20 !");
-            return false;
-        }
+    public int getPercentageBetweenRange(int from, int to) {
+        return (getGradeCountBetweenRange(from,to) * 100) / this.grades.length;
     }
 
 
     public static void main(String[] args) {
 
-        int threshold = 12;
-
-        int[] userArray = createArray();
-        System.out.println(userArray.length);
-        enterRating(userArray);
-        double average = getAverage(userArray);
-        double min = getMinGrade(userArray);
-        double max = getMaxGrade(userArray);
-        int count = getGradeCountAboveThreshold(userArray, threshold);
-        int percentage = getPercentageAboveThreshold(userArray, count);
-
-        GradesAnalyzer report = new GradesAnalyzer(average,max,min,threshold,count,percentage);
-
-        displayInformations(userArray,report);
+        GradesAnalyzer analyzer = new GradesAnalyzer();
+        analyzer.displayInformations();
         System.out.println();
-        displayGradeRanges(userArray);
+        analyzer.displayGradeRanges();
 
     }
 }

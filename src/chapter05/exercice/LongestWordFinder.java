@@ -25,19 +25,17 @@ public class LongestWordFinder {
         for (int index = 0; index < text.length(); index++) {
             char letter = text.charAt(index);
 
-            if (letter != ' '){
+            if (letter != ' ') {
                 currentWord += letter;
-            }
 
-            if (currentWord.length() > longestWord.length()){
-                longestWord = currentWord;
+            } else {
+
+                if (currentWord.length() > longestWord.length()) {
+                    longestWord = currentWord;
+                }
                 currentWord = "";
             }
-            else {
-                currentWord="";
-            }
         }
-
         System.out.println("Affichage: " + longestWord);
     }
 

@@ -4,44 +4,72 @@ import java.util.Scanner;
 
 public class GradesAnalyzer {
 
-    public static Scanner s = new Scanner(System.in);
+    private static final Scanner s = new Scanner(System.in);
 
     public static final int RANGE_0_5_FROM = 0;
-    public static final int RANGE_0_5_TO   = 5;
+    public static final int RANGE_0_5_TO = 5;
 
     public static final int RANGE_6_10_FROM = 6;
-    public static final int RANGE_6_10_TO   = 10;
+    public static final int RANGE_6_10_TO = 10;
 
     public static final int RANGE_11_15_FROM = 11;
-    public static final int RANGE_11_15_TO   = 15;
+    public static final int RANGE_11_15_TO = 15;
 
     public static final int RANGE_16_20_FROM = 16;
-    public static final int RANGE_16_20_TO   = 20;
+    public static final int RANGE_16_20_TO = 20;
 
-    public final int THRESHOLD= 12;
+    public final int THRESHOLD = 12;
 
     private final int[] grades;
 
-    public GradesAnalyzer() {
-
-        this.grades = createArray();
-        enterRating(this.grades);
-
+    /**
+     * Creates a GradesAnalyzer with a predefined array of grades.
+     *
+     * @param grades an array of integer grades
+     */
+    public GradesAnalyzer(int[] grades) {
+        this.grades = grades;
     }
 
-    // Gestion Exception pour erreur de taille
-    public static class SizeException extends Exception {
-        public SizeException(String message) {
+    // ==================== Exceptions ====================
+
+    /**
+     * Thrown when the size of the grade array is invalid (not between 2 and 30).
+     */
+    private static class AnalyzerArraySizeException extends Exception {
+        public AnalyzerArraySizeException(String message) {
             super(message);
         }
     }
 
-    public static void validateSize(int size) throws SizeException {
-        if (size < 2 || size > 30) {
-            throw new SizeException("Vous ne pouvez ajouter que 2 à 30 notes !");
+    /**
+     * Thrown when a grade is out of the valid range (0 to 20).
+     */
+    private static class AnalyzerRateIntervalException extends Exception {
+        public AnalyzerRateIntervalException(String message) {
+            super(message);
         }
     }
 
+    // ==================== Static Utilities ====================
+
+    /**
+     * Validates the size of a grade array.
+     *
+     * @param size the size to validate
+     * @throws AnalyzerArraySizeException if size is not between 2 and 30
+     */
+    private static void validateSize(int size) throws AnalyzerArraySizeException {
+        if (size < 2 || size > 30) {
+            throw new AnalyzerArraySizeException("Vous ne pouvez ajouter que 2 à 30 notes !");
+        }
+    }
+
+    /**
+     * Prompts the user to define the number of grades and returns a properly sized array.
+     *
+     * @return an integer array with user-defined size
+     */
     public static int[] createArray() {
         int size;
 
@@ -51,27 +79,30 @@ public class GradesAnalyzer {
                 size = s.nextInt();
                 validateSize(size);
                 break;
-            } catch (SizeException e) {
+            } catch (AnalyzerArraySizeException e) {
                 System.out.println(e.getMessage());
             }
         }
         return new int[size];
     }
 
-
-    // Gestion Exception pour erreur de note
-    public static class RatingException extends Exception {
-        public RatingException(String message) {
-            super(message);
-        }
-    }
-
-    public static void validateRating(int rating) throws RatingException {
+    /**
+     * Validates a single grade value.
+     *
+     * @param rating the grade to validate
+     * @throws AnalyzerRateIntervalException if the grade is not between 0 and 20
+     */
+    private static void validateRating(int rating) throws AnalyzerRateIntervalException {
         if (rating < 0 || rating > 20) {
-            throw new RatingException("Votre note doit être comprise entre 0 et 20 !");
+            throw new AnalyzerRateIntervalException("Votre note doit être comprise entre 0 et 20 !");
         }
     }
 
+    /**
+     * Prompts the user to enter grades into the given array, validating each entry.
+     *
+     * @param userArray the array to fill with grades
+     */
     public static void enterRating(int[] userArray) {
         int rating;
 
@@ -83,14 +114,25 @@ public class GradesAnalyzer {
                     validateRating(rating);
                     userArray[i] = rating;
                     break;
-                } catch (RatingException e) {
+                } catch (AnalyzerRateIntervalException e) {
                     System.out.println(e.getMessage());
                 }
             }
         }
     }
 
-    public void displayInformations() {
+// ==================== Instance Methods ====================
+
+    /**
+     * Displays all the grades along with statistical analysis.
+     *
+     * @param average               the average grade
+     * @param maxGrade              the maximum grade
+     * @param minGrade              the minimum grade
+     * @param gradeCountAboveThreshold number of grades above the threshold
+     * @param percentageAboveThreshold percentage of grades above the threshold
+     */
+    public void displayInformations(double average, double maxGrade, double minGrade, int gradeCountAboveThreshold, int percentageAboveThreshold) {
         System.out.println("---------- Notes saisies ----------");
 
         for (int i = 0; i < this.grades.length; i++) {
@@ -98,35 +140,31 @@ public class GradesAnalyzer {
         }
         System.out.println();
         System.out.println("---------- Affichage ----------");
-        System.out.println("La moyenne de l'élève est de : " + getAverage() + "/20");
-        System.out.println("La note la plus haute est : " + getMaxGrade() + "/20");
-        System.out.println("La note la plus petite est : " + getMinGrade() + "/20");
-        System.out.println("Nombre de notes > " + THRESHOLD + " = " + getGradeCountAboveThreshold() + " (soit " + getPercentageAboveThreshold() + "%)");
+        System.out.println("La moyenne de l'élève est de : " + average + "/20");
+        System.out.println("La note la plus haute est : " + maxGrade + "/20");
+        System.out.println("La note la plus petite est : " + minGrade + "/20");
+        System.out.println("Nombre de notes > " + this.THRESHOLD + " = " + gradeCountAboveThreshold + " (soit " + percentageAboveThreshold + "%)");
 
     }
 
-    public void displayGradeRanges() {
-        System.out.println("---------- Répartition par intervalle ----------");
-
-        int count_0_5 = getGradeCountBetweenRange(RANGE_0_5_FROM, RANGE_0_5_TO);
-        int percent_0_5 = getPercentageBetweenRange(RANGE_0_5_FROM,RANGE_0_5_TO);
-        System.out.println("Nombre de notes [0 - 5] = " + count_0_5 + " (soit " + percent_0_5 + "%)");
-
-        int count_6_10 = getGradeCountBetweenRange(RANGE_6_10_FROM, RANGE_6_10_TO);
-        int percent_6_10 = getPercentageBetweenRange(RANGE_6_10_FROM,RANGE_6_10_TO);
-        System.out.println("Nombre de notes [6 - 10] = " + count_6_10 + " (soit " + percent_6_10 + "%)");
-
-        int count_11_15 = getGradeCountBetweenRange(RANGE_11_15_FROM, RANGE_11_15_TO);
-        int percent_11_15 = getPercentageBetweenRange(RANGE_11_15_FROM,RANGE_11_15_TO);
-        System.out.println("Nombre de notes [11 - 15] = " + count_11_15 + " (soit " + percent_11_15 + "%)");
-
-        int count_16_20 = getGradeCountBetweenRange(RANGE_16_20_FROM, RANGE_16_20_TO);
-        int percent_16_20 = getPercentageBetweenRange(RANGE_16_20_FROM,RANGE_16_20_TO);
-        System.out.println("Nombre de notes [16 - 20] = " + count_16_20 + " (soit " + percent_16_20 + "%)");
+    /**
+     * Displays the count and percentage of grades within a given range.
+     *
+     * @param count     number of grades in the range
+     * @param percent   percentage of grades in the range
+     * @param rangeFrom start of the range (inclusive)
+     * @param rangeTo   end of the range (inclusive)
+     */
+    public void displayGradeRange(int count, int percent, int rangeFrom, int rangeTo) {
+        System.out.println("Nombre de note [" + rangeFrom + "-" + rangeTo + "] = " + count + " (soit " + percent + "%)");
     }
 
+    /**
+     * Computes the average of all grades.
+     *
+     * @return the average grade
+     */
     public double getAverage() {
-
         double totalRating = 0;
 
         for (int i = 0; i < this.grades.length; i++) {
@@ -136,6 +174,11 @@ public class GradesAnalyzer {
         return totalRating / this.grades.length;
     }
 
+    /**
+     * Returns the minimum grade.
+     *
+     * @return the smallest grade
+     */
     public double getMinGrade() {
 
         double min = this.grades[0];
@@ -148,6 +191,11 @@ public class GradesAnalyzer {
         return min;
     }
 
+    /**
+     * Returns the maximum grade.
+     *
+     * @return the biggest grade
+     */
     public double getMaxGrade() {
         double max = this.grades[0];
 
@@ -159,6 +207,11 @@ public class GradesAnalyzer {
         return max;
     }
 
+    /**
+     * Counts the number of grades above the threshold.
+     *
+     * @return count of grades above threshold
+     */
     public int getGradeCountAboveThreshold() {
 
         int count = 0;
@@ -171,10 +224,22 @@ public class GradesAnalyzer {
         return count;
     }
 
+    /**
+     * Computes the percentage of grades above the threshold.
+     *
+     * @return percentage of grades above threshold
+     */
     public int getPercentageAboveThreshold() {
         return (getGradeCountAboveThreshold() * 100) / this.grades.length;
     }
 
+    /**
+     * Counts the number of grades within a specific range.
+     *
+     * @param from start of the range (inclusive)
+     * @param to   end of the range (inclusive)
+     * @return number of grades in range
+     */
     public int getGradeCountBetweenRange(int from, int to) {
         int count = 0;
 
@@ -187,17 +252,44 @@ public class GradesAnalyzer {
         return count;
     }
 
+    /**
+     * Computes the percentage of grades within a specific range.
+     *
+     * @param from start of the range (inclusive)
+     * @param to   end of the range (inclusive)
+     * @return percentage of grades in range
+     */
     public int getPercentageBetweenRange(int from, int to) {
-        return (getGradeCountBetweenRange(from,to) * 100) / this.grades.length;
+        return (getGradeCountBetweenRange(from, to) * 100) / this.grades.length;
     }
 
 
     public static void main(String[] args) {
 
-        GradesAnalyzer analyzer = new GradesAnalyzer();
-        analyzer.displayInformations();
-        System.out.println();
-        analyzer.displayGradeRanges();
+        int[] notes = GradesAnalyzer.createArray();
+        GradesAnalyzer.enterRating(notes);
 
+        GradesAnalyzer analyzer = new GradesAnalyzer(notes);
+        analyzer.displayInformations(
+                analyzer.getAverage(),
+                analyzer.getMaxGrade(),
+                analyzer.getMinGrade(),
+                analyzer.getGradeCountAboveThreshold(),
+                analyzer.getPercentageAboveThreshold());
+        System.out.println();
+        System.out.println("---------- Répartition par intervalle ----------");
+        analyzer.displayGradeRange(analyzer.getGradeCountBetweenRange(RANGE_0_5_FROM, RANGE_0_5_TO),
+                analyzer.getPercentageBetweenRange(RANGE_0_5_FROM, RANGE_0_5_TO),
+                RANGE_0_5_FROM, RANGE_0_5_TO);
+        analyzer.displayGradeRange(analyzer.getGradeCountBetweenRange(RANGE_6_10_FROM, RANGE_6_10_TO),
+                analyzer.getPercentageBetweenRange(RANGE_6_10_FROM, RANGE_6_10_TO),
+                RANGE_6_10_FROM, RANGE_6_10_TO);
+        analyzer.displayGradeRange(analyzer.getGradeCountBetweenRange(RANGE_11_15_FROM, RANGE_11_15_TO),
+                analyzer.getPercentageBetweenRange(RANGE_11_15_FROM, RANGE_11_15_TO),
+                RANGE_11_15_FROM, RANGE_11_15_TO);
+        analyzer.displayGradeRange(analyzer.getGradeCountBetweenRange(RANGE_16_20_FROM, RANGE_16_20_TO),
+                analyzer.getPercentageBetweenRange(RANGE_16_20_FROM, RANGE_16_20_TO),
+                RANGE_16_20_FROM, RANGE_16_20_TO);
     }
+
 }

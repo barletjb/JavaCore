@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class SubstitutionCipher {
 
+    public static Scanner s = new Scanner(System.in);
+
     public static final String LATIN_ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
     String latinAlphabet;
@@ -16,18 +18,7 @@ public class SubstitutionCipher {
     }
 
 
-    /**
-     * Encrypts a given text using the substitution cipher defined by this instance.
-     * Each lowercase letter from the base alphabet is replaced by a unique placeholder
-     * to avoid accidental double substitutions, and then
-     * replaced with its corresponding letter from the substitution alphabet.
-     *
-     * This method preserves characters that are not in the base alphabet (spaces,
-     * punctuation marks, etc.).
-     *
-     * @param textToEncrypt the plain text message to encrypt
-     * @return the encrypted message
-     */
+
     public String cipher(String textToEncrypt){
 
         String textCrypt = textToEncrypt;
@@ -51,6 +42,31 @@ public class SubstitutionCipher {
         return textCrypt;
     }
 
+    public String cipher2 (String textToEncrypt){
+
+        char[] alreadyReplace = new char[26];
+        String textCrypt = textToEncrypt;
+
+        for (int i = 0; i < this.latinAlphabet.length(); i++){
+
+            char originalLetter = this.latinAlphabet.charAt(i);
+            char substitutionLetter = this.substitutionAlphabet.charAt(i);
+
+            int index = originalLetter - 'a';
+            int indexSubstitution = substitutionLetter -'a';
+
+            if (alreadyReplace[index] != substitutionLetter) {
+
+                textCrypt = textCrypt.replaceAll(String.valueOf(originalLetter), String.valueOf(substitutionLetter));
+
+
+                alreadyReplace[index] = originalLetter;
+                //alreadyReplace[indexSubstitution] = ;
+            }
+        }
+        return textCrypt;
+    }
+
 
     /**
      * Applies the substitution cipher multiple times in succession to the given text.
@@ -70,68 +86,78 @@ public class SubstitutionCipher {
     }
 
 
-    /**
-     * Prompts the user to enter a custom substitution alphabet via the console,
-     * and keeps asking until a valid input is provided.
-     * A valid substitution alphabet must contain exactly 26 unique lowercase letters (a–z)
-     * without any spaces, digits, or special characters.
-     *
-     * @return a valid substitution alphabet string entered by the user
-     */
+
     public static String userChoice (){
-        Scanner s = new Scanner(System.in);
-        boolean isValid;
-        String substitutionAlpha;
 
-        do {
-            System.out.print("Veuillez saisir votre alphabet de substitution :");
-            substitutionAlpha = s.nextLine().toLowerCase().trim();
-            substitutionAlpha = substitutionAlpha.replaceAll(" ", "");
+        while (true) {
+            try {
+                System.out.print("Veuillez saisir votre alphabet de substitution :");
+                String substitutionAlpha = s.nextLine().toLowerCase().trim();
+                substitutionAlpha = substitutionAlpha.replaceAll("\\s+", "");
 
-            isValid = searchError(substitutionAlpha);
-            System.out.println();
+                validateSize(substitutionAlpha);
+                validateChar(substitutionAlpha);
+                validateRepetitionChar(substitutionAlpha);
 
-        } while (!isValid);
+                return substitutionAlpha;
 
-        s.close();
+            } catch (SizeException | RepetitionException | CharException e ){
+                System.out.println("ERROR : " + e.getMessage());
+            }
 
-        return substitutionAlpha;
+        }
     }
 
-    /**
-     * Validates the given substitution alphabet.
-     * The alphabet is considered valid if:
-     * - It contains exactly 26 characters
-     * - Each character is a lowercase letter (a–z)
-     * - There are no duplicate characters
-     * Displays an error message if a rule is violated.
-     *
-     * @param userSubstitutionAlphabet the substitution alphabet string to validate
-     * @return {true} if the alphabet is valid; {false} otherwise
-     */
-    public static boolean searchError(String userSubstitutionAlphabet){
 
-        if (userSubstitutionAlphabet.length() != LATIN_ALPHABET.length() ){
-            System.out.println("Veuillez bien saisir 26 lettres");
-            return false;
+    public static class SizeException extends Exception{
+        public SizeException(String message){
+            super(message);
+        }
+    }
+
+    public static void validateSize(String substitutionAlphabet) throws SizeException {
+        if (substitutionAlphabet.length() != LATIN_ALPHABET.length()){
+            throw new SizeException("Veuillez bien saisir 26 lettres");
         }
 
-        for (int i = 0; i < userSubstitutionAlphabet.length(); i++){
+    }
 
-            char letter = userSubstitutionAlphabet.charAt(i);
+    public static class CharException extends Exception{
+        public CharException(String message){
+            super(message);
+        }
+    }
 
-            if (userSubstitutionAlphabet.indexOf(letter,i + 1) >= 0){
-                System.out.println("Vous ne pouvez pas mettre plusieurs fois la même lettre");
-                return false;
+    public static void validateChar(String substitutionAlphabet) throws CharException {
 
-            } else if ( !(letter >= 'a' && letter <= 'z')) {
-                System.out.println("Vous ne devez saisir seulement que des lettres !");
-                return false;
+        for (int i = 0; i < substitutionAlphabet.length(); i++){
+
+            char letter = substitutionAlphabet.charAt(i);
+
+            if ( !(letter >= 'a' && letter <= 'z')) {
+                throw new CharException("Vous ne devez saisir seulement que des lettres !");
             }
         }
-        return true;
     }
 
+    public static class RepetitionException extends Exception{
+        public RepetitionException(String message){
+            super(message);
+        }
+    }
+
+    public static void validateRepetitionChar(String substitutionAlphabet) throws RepetitionException{
+
+        for (int i = 0; i < substitutionAlphabet.length(); i++){
+
+            char letter = substitutionAlphabet.charAt(i);
+
+            if (substitutionAlphabet.indexOf(letter,i + 1) >= 0) {
+                throw new RepetitionException("Vous ne pouvez pas mettre plusieurs fois la même lettre");
+            }
+        }
+
+    }
 
 
     public static void main(String[] args) {
@@ -145,9 +171,16 @@ public class SubstitutionCipher {
         SubstitutionCipher  firstCipher = new SubstitutionCipher(LATIN_ALPHABET,userChoice1);
 
         System.out.println("Attention message en cours de cryptage .... ");
-        String textCrypt = firstCipher.cipher(textToEncrypt,10);
-
+        int numberIterations = 10;
+        String textCrypt = firstCipher.cipher(textToEncrypt,numberIterations);
         System.out.println("Voici votre message crypté : " + textCrypt);
+
+
+        System.out.println("CYPER 2");
+        String textCrypt2 = firstCipher.cipher2(textToEncrypt);
+        System.out.println(textCrypt2);
+
+
 
 
 

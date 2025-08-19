@@ -102,8 +102,6 @@ public class BubbleSorting {
         for (int i = 0; i < numbers.length; i++) {
             System.out.print(numbers[i] + " ");
       }
-
-        //Arrays.sort(numbers);
         
 
     }
